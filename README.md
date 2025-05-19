@@ -47,4 +47,30 @@ Route::get('/', function () {
 5. In the terminal, run `php artisan serve`. Go to PostmanAPI, and enter 127.0.0.1:8000/api to see the *return* value.
 
 ---
-## 
+## Configuration
+1. Create a model named Post using `php artisan make:model -a --api Post` in the terminal.
+
+2. Go to the newly created Post model: `app/Models/Post.php`.
+
+3. Enter below `use HasFactory`:
+```
+protected $fillable = [
+    'title',
+    'body',
+];
+```
+
+4. Go to the newly created Post Table migration in `database/migrations` and enter in the `up` function:
+```
+Schema::create('posts', function (Blueprint $table) {
+            $table->id();
+            $table->string('title'); // Enter 'title' column
+            $table->text('body'); // Enter 'body' column
+            $table->timestamps();
+        });
+```
+
+5. Migrate the new Migration file by going to the terminal and run `php artisan migrate`.
+
+6. In `route/api.php`, delete/comment out the previous `Route::get('/',...);` and enter: `Route::apiResource('posts', PostController::class);`.
+> Ensure you have, at the top of the file, a line that declares to use the file: `use App\Http\Controllers\PostController;`.
