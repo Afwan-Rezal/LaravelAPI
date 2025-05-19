@@ -74,3 +74,38 @@ Schema::create('posts', function (Blueprint $table) {
 
 6. In `route/api.php`, delete/comment out the previous `Route::get('/',...);` and enter: `Route::apiResource('posts', PostController::class);`.
 > Ensure you have, at the top of the file, a line that declares to use the file: `use App\Http\Controllers\PostController;`.
+
+### Controller 
+
+1. In `app/Http/Controllers/PostController.php`, configure the following:
+   - `index()` function
+     - Enter `return Post::all();` within the function.
+    ```
+    public function index()
+        {
+            return Post::all();
+        }
+    ```
+   - `store()` function
+     - Edit the parameters from `StorePostRequest $request` to `Request $request`. 
+     Ensure that `use Illuminate\Http\Request;` is declared.
+     - Using `$request`, validate the values with the requirement below:
+       - 'title'=> 'required|max:255'
+       - 'body'=> 'required' 
+     - Enter `return 'ok';` to ensure that the operation goes.
+    ```
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title'=> 'required|max:255',
+            'body'=> 'required',
+        ]);
+        
+        return 'ok';
+    }
+    ```
+
+2. (IMPORTANT) Using PostManAPI, head into `Header` and congifure:
+- Key -> `Accept`
+- Value -> `application/json`
+When run, the expected value should be a status: `422 Unprocessable Content`.
