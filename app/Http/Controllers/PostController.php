@@ -27,12 +27,14 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $fields = $request->validate([
             'title'=> 'required|max:255',
             'body'=> 'required',
         ]);
         
-        return 'ok';
+        $post = Post::create($fields);
+        
+        return $post;
     }
 
     /**
@@ -40,7 +42,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return $post;
     }
 
     /**
